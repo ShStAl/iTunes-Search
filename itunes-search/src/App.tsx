@@ -1,10 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 function App() {
 
   const [search, setSearch] = useState('');
+
+  const { ref, inView } = useInView();
 
   const fetchItems = async ({ pageParam }) => {
     console.log('fetching')
@@ -23,6 +26,12 @@ function App() {
       return (pages.length * 5);
     }
   });
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView])
 
 
   return (
@@ -65,7 +74,7 @@ function App() {
                 ))}
               </div>
             ))}
-            <div>
+            <div ref={ref}>
               <button
                 onClick={() => fetchNextPage()}
                 disabled={!hasNextPage || isFetchingNextPage}
