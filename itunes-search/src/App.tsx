@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios"
 import { useState } from "react";
 
@@ -6,23 +6,28 @@ function App() {
 
   const [search, setSearch] = useState('');
 
-  // const getList = async () => {
-  //   return await axios.get(`https://itunes.apple.com/search?term=${search}&media=music`);
-  // };
+  const fetchItems = async ({ pageParam }) => {
+    console.log('fetching')
+    const response = await axios.get(`https://itunes.apple.com/search?term=${search}&media=music&limit=5&offset=${pageParam}`)
+    return response.data.results;
+  }
 
-  const { data, isLoading, error } = useQuery({
+  const { data, error, status, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['search', search],
-    queryFn: async () => {
-      console.log('fetching')
-      // fetch(`https://itunes.apple.com/search?term=${search}&media=music`)
-      return await axios.get(`https://655c7e1525b76d9884fd6084.mockapi.io/tweets`)
+    queryFn: fetchItems,
+    initialPageParam: 0,
+    getNextPageParam: (lastpage, pages) => {
+      if (lastpage.length < 5) {
+        return undefined;
+      }
+      return (pages.length * 5);
     }
   });
 
 
   return (
     <>
-      <main className="h-screen w-full flex flex-col justify-center items-center">
+      <main className="h-screen w-full flex flex-col items-center">
         <h1 className="bg-gradient-to-r from-fuchsia-400 to-indigo-500 bg-clip-text text-transparent text-5xl font-bold">
           iTunes Search
         </h1>
@@ -40,14 +45,42 @@ function App() {
             className="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white pl-11 pr-5 outline-none"
           />
         </div>
-        {isLoading && <p>Loading...</p>}
-        {data && data.data.map((item) => {
-          return (
-            <div key={item.id} className="bg-slate-500">
-              {item.text}
+        {status === 'pending' ? (
+          <p>Loading...</p>
+        ) : status === 'error' ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <>
+            {data.pages.map((group, i) => (
+              <div key={i}>
+                {group.map((item) => (
+                  <div key={item.trackId} className="flex flex-col border border-cyan-300">
+                    <div className="flex">
+                      <p>Artist: {item.artistName}</p>
+                      <p>Album: {item.collectionName}</p>
+                    </div>
+                    <p>Track: {item.trackName}</p>
+                    <img src={item.artworkUrl100} className="object-cover w-14 h-14 rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            ))}
+            <div>
+              <button
+                onClick={() => fetchNextPage()}
+                disabled={!hasNextPage || isFetchingNextPage}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                    ? 'Load More'
+                    : 'Nothing more to load'}
+              </button>
             </div>
-          )
-        })}
+            <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+          </>
+        )
+        }
       </main>
     </>
   )
