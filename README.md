@@ -8,6 +8,8 @@ Web app for music search in iTunes library using publicly available iTunes Searc
 - "Go" button for search
 - Scrollable list of results
 - Auto-upload next results on scroll
+- Routing to single item of results
+- Track preview on single item page
 - Error/loading messages
 - Skeleton loader
 - Responsive design
@@ -18,6 +20,7 @@ Web app for music search in iTunes library using publicly available iTunes Searc
 - Tailwind
 - axios
 - TanStack Query(v5) (FKA React Query)
+- React-router
 
  
 
