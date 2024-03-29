@@ -1,4 +1,12 @@
-export default function SearchBtn({ search, refetch }) {
+import { InfiniteData, QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import FetchedItem from "../../interfaces/app.interface";
+
+interface Props {
+  search: string;
+  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<InfiniteData<FetchedItem[], unknown>, Error>>;
+}
+
+export default function SearchBtn({ search, refetch }: Props): JSX.Element {
   return (
     <button
       disabled={!search}

@@ -1,4 +1,4 @@
-export default function ItemSkeleton() {
+export default function ItemSkeleton(): JSX.Element {
   return (
     <div className="w-96 flex items-center border animate-pulse border-gray-200 rounded-lg">
       <div className="bg-gray-100 flex justify-center rounded-lg items-center w-16 h-16">

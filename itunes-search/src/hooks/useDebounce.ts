@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function useDebounce(value) {
+export default function useDebounce(value: string): string {
 
   const [debouncedValue, setDebouncedValue] = useState(value);
 

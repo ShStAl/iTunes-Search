@@ -1,4 +1,9 @@
-export default function SearchInput({ search, setSearch }) {
+interface Props {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function SearchInput({ search, setSearch }: Props): JSX.Element {
   return (
     <input
       type="email"

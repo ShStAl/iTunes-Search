@@ -4,6 +4,12 @@ import useDebounce from "./hooks/useDebounce";
 import SearchBar from "./components/Search/SearchBar";
 import ResultList from "./components/Result/ResultList";
 import { useState } from "react";
+import FetchedItem from "./interfaces/app.interface";
+
+
+interface FetchedItemsResponse {
+  results: FetchedItem[];
+}
 
 function App() {
 
@@ -11,8 +17,8 @@ function App() {
 
   const debouncedSearch = useDebounce(search);
 
-  const fetchItems = async ({ pageParam }) => {
-    const response = await axios.get(`https://itunes.apple.com/search?term=${search}&media=music&limit=5&offset=${pageParam}`)
+  const fetchItems = async ({ pageParam }: { pageParam: number | undefined }) => {
+    const response = await axios.get<FetchedItemsResponse>(`https://itunes.apple.com/search?term=${search}&media=music&limit=5&offset=${pageParam}`)
     return response.data.results;
   }
 
