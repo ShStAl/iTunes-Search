@@ -1,6 +1,7 @@
 export default function ItemSkeleton(): JSX.Element {
+
   return (
-    <div className="w-96 flex items-center border animate-pulse border-gray-200 rounded-lg">
+    <div className="w-[350px] md:w-96 flex items-center animate-pulse shadow-sm bg-white rounded-xl">
       <div className="bg-gray-100 flex justify-center rounded-lg items-center w-16 h-16">
         <svg
           className="w-8 h-8 text-gray-300"
