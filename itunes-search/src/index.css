@@ -5,3 +5,21 @@
 html {
 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 }
+
+main {
+  background: linear-gradient(45deg, #d2001916, #7462ff1f, #f48e211a, #23d5ab28);
+  background-size: 300% 300%;
+  animation: color 12s ease-in-out infinite;
+}
+
+@keyframes color {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
