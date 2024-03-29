@@ -35,10 +35,10 @@ export default function ResultList({ status, error, data, fetchNextPage, hasNext
           (
             <p className="text-gray-500 mt-2 text-sm">Enter artist name, track name etc.</p>
           ) : status === 'error' ? (
-            <p>Error: {error.message}</p>
+            <p>Error: {error?.message}</p>
           ) : (
             <div className="w-[350px] md:w-96 h-[400px] overflow-y-scroll flex gap-2 flex-col items-center rounded-xl">
-              {data.pages.map((group, i) => (
+              {data?.pages.map((group, i) => (
                 <div className="flex flex-col gap-2" key={i}>
                   {group.map((item) => (
                     <ResultItem key={item.trackId} item={item} />
@@ -48,7 +48,7 @@ export default function ResultList({ status, error, data, fetchNextPage, hasNext
               <ResultLoadMore
                 isFetchingNextPage={isFetchingNextPage}
                 hasNextPage={hasNextPage}
-                hasData={data.pages[0].length > 0}
+                hasData={data ? data.pages[0].length > 0 : false}
                 isSearch={isSearch} />
               <div className="mt-5" ref={ref} />
             </div >
