@@ -5,23 +5,22 @@ import SearchBar from "../components/Search/SearchBar";
 import ResultList from "../components/Result/ResultList";
 import { useState } from "react";
 import FetchedItem from "../interfaces/app.interface";
-import { NavLink } from 'react-router-dom';
 
 
 interface FetchedItemsResponse {
   results: FetchedItem[];
 }
 
-function Homepage() {
+export default function Homepage() {
 
   const [search, setSearch] = useState('');
 
   const debouncedSearch = useDebounce(search);
 
   const fetchItems = async ({ pageParam }: { pageParam: number | undefined }) => {
-    const response = await axios.get<FetchedItemsResponse>(`https://itunes.apple.com/search?term=${search}&media=music&limit=5&offset=${pageParam}`)
+    const response = await axios.get<FetchedItemsResponse>(`https://itunes.apple.com/search?term=${search}&media=music&limit=5&offset=${pageParam}`);
     return response.data.results;
-  }
+  };
 
   const { data, error, status, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
     queryKey: ['search', debouncedSearch],
@@ -53,5 +52,3 @@ function Homepage() {
     </>
   )
 }
-
-export default Homepage
